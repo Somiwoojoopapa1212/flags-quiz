@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌍 세계 국기 퀴즈</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3B82F6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="국기 퀴즈">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Jua', 'Noto Sans KR', sans-serif;
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+      color: #1E3A5F;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .container { width: 100%; max-width: 480px; }
+
+    .card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.12);
+    }
+
+    h1 { font-size: 1.7rem; text-align: center; margin-bottom: 6px; color: #3B82F6; }
+    .subtitle { text-align: center; color: #64748B; font-size: 0.9rem; margin-bottom: 24px; }
+
+    /* 통계 */
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      background: #EFF6FF;
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 24px;
+      border: 1.5px solid #BFDBFE;
+    }
+
+    .stat { text-align: center; }
+    .stat-num { font-size: 1.4rem; font-weight: bold; color: #3B82F6; }
+    .stat-label { font-size: 0.75rem; color: #64748B; margin-top: 2px; }
+
+    /* 난이도 */
+    .section-title { font-size: 0.88rem; color: #64748B; margin-bottom: 10px; }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .diff-btn {
+      background: #EFF6FF;
+      border: 2px solid #BFDBFE;
+      border-radius: 14px;
+      padding: 14px 8px;
+      color: #1E3A5F;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.88rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .diff-btn .icon { font-size: 1.5rem; display: block; margin-bottom: 4px; }
+    .diff-btn .count { font-size: 0.72rem; color: #64748B; }
+
+    .diff-btn.active { border-color: #3B82F6; background: #EFF6FF; color: #3B82F6; }
+    .diff-btn.easy.active { border-color: #22C55E; background: #F0FFF4; color: #16A34A; }
+    .diff-btn.medium.active { border-color: #F59E0B; background: #FFFBEB; color: #D97706; }
+    .diff-btn.hard.active { border-color: #EF4444; background: #FFF5F5; color: #DC2626; }
+
+    /* 버튼 */
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #3B82F6, #2563EB);
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      color: #fff;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+      transition: transform 0.15s;
+    }
+
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-secondary {
+      width: 100%;
+      background: #EFF6FF;
+      border: 2px solid #BFDBFE;
+      border-radius: 16px;
+      padding: 14px;
+      color: #64748B;
+      font-family: 'Jua', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* 퀴즈 헤더 */
+    .quiz-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .quit-btn {
+      background: #EFF6FF;
+      border: 1.5px solid #BFDBFE;
+      border-radius: 10px;
+      padding: 6px 12px;
+      color: #64748B;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* 진행 바 */
+    .progress-wrap { margin-bottom: 20px; }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #64748B;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #DBEAFE;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3B82F6, #60A5FA);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    /* 타이머 */
+    .timer-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .timer-bar {
+      flex: 1;
+      height: 10px;
+      background: #DBEAFE;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .timer-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #22C55E, #86EFAC);
+      border-radius: 5px;
+      transition: width 0.1s linear, background 0.3s;
+    }
+
+    .timer-fill.warning { background: linear-gradient(90deg, #F59E0B, #FCD34D); }
+    .timer-fill.danger { background: linear-gradient(90deg, #EF4444, #FCA5A5); }
+    .timer-num { font-size: 0.9rem; color: #64748B; min-width: 28px; text-align: right; }
+
+    /* 국기 */
+    .flag-box {
+      background: #F8FAFC;
+      border: 2px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .flag-img {
+      width: 200px;
+      height: 133px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .flag-hint {
+      font-size: 0.78rem;
+      color: #94A3B8;
+      margin-top: 10px;
+    }
+
+    /* 선택지 */
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .choice-btn {
+      background: #FFFFFF;
+      border: 2px solid #DBEAFE;
+      border-radius: 14px;
+      padding: 16px;
+      color: #1E3A5F;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.05rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .choice-btn:hover { background: #EFF6FF; border-color: #93C5FD; }
+    .choice-btn.correct { border-color: #22C55E; background: #F0FFF4; color: #16A34A; }
+    .choice-btn.wrong { border-color: #EF4444; background: #FFF5F5; color: #DC2626; }
+    .choice-btn.disabled { cursor: default; }
+    .choice-btn.disabled:hover { background: #FFFFFF; border-color: #DBEAFE; }
+
+    /* 콤보 */
+    .combo-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #F59E0B, #FCD34D);
+      color: #fff;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.8rem;
+      margin-left: 8px;
+      display: none;
+    }
+
+    /* 결과 */
+    .score-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: conic-gradient(#3B82F6 0deg, #3B82F6 var(--deg), #DBEAFE var(--deg));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .score-inner {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .score-num { font-size: 1.8rem; font-weight: bold; color: #3B82F6; }
+    .score-total { font-size: 0.8rem; color: #64748B; }
+
+    .result-message { text-align: center; font-size: 1.05rem; margin-bottom: 20px; }
+
+    .result-stats {
+      display: flex;
+      justify-content: space-around;
+      background: #EFF6FF;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      border: 1.5px solid #BFDBFE;
+    }
+
+    .wrong-list { margin-bottom: 20px; }
+    .wrong-title { font-size: 0.85rem; color: #64748B; margin-bottom: 10px; }
+
+    .wrong-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #EFF6FF;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+
+    .wrong-flag { width: 48px; height: 32px; object-fit: cover; border-radius: 4px; border: 1px solid #E2E8F0; }
+    .wrong-name { font-size: 0.9rem; color: #1E3A5F; }
+
+    /* 모달 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .modal h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .modal p { font-size: 0.88rem; color: #64748B; margin-bottom: 20px; }
+    .modal-btns { display: flex; gap: 10px; }
+    .modal-btns button { flex: 1; padding: 12px; border-radius: 12px; font-family: 'Jua', sans-serif; font-size: 0.95rem; cursor: pointer; border: none; }
+    .modal-continue { background: linear-gradient(135deg, #3B82F6, #2563EB); color: #fff; }
+    .modal-quit { background: #EFF6FF; border: 1.5px solid #BFDBFE !important; color: #64748B; }
+
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 홈 화면 -->
+  <div id="screen-home" class="card">
+    <h1>🌍 국기 퀴즈</h1>
+    <p class="subtitle">세계 국기를 보고 나라 이름을 맞혀보세요!</p>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="stat-best-easy">-</div>
+        <div class="stat-label">쉬움 최고</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-best-medium">-</div>
+        <div class="stat-label">보통 최고</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="stat-best-hard">-</div>
+        <div class="stat-label">어려움 최고</div>
+      </div>
+    </div>
+
+    <p class="section-title">난이도 선택</p>
+    <div class="diff-grid">
+      <button class="diff-btn easy active" data-diff="easy" onclick="selectDiff(this)">
+        <span class="icon">🌱</span>
+        쉬움
+        <span class="count">주요 20개국</span>
+      </button>
+      <button class="diff-btn medium" data-diff="medium" onclick="selectDiff(this)">
+        <span class="icon">🌏</span>
+        보통
+        <span class="count">50개국</span>
+      </button>
+      <button class="diff-btn hard" data-diff="hard" onclick="selectDiff(this)">
+        <span class="icon">🔥</span>
+        어려움
+        <span class="count">100개국</span>
+      </button>
+    </div>
+
+    <button class="btn-primary" onclick="startQuiz()">퀴즈 시작 🚀</button>
+  </div>
+
+  <!-- 퀴즈 화면 -->
+  <div id="screen-quiz" class="card hidden">
+    <div class="quiz-header">
+      <button class="quit-btn" onclick="openModal()">✕ 그만하기</button>
+      <span id="quiz-score-live" style="font-size:0.85rem;color:#64748B">
+        ✅ 0 &nbsp; ❌ 0
+        <span class="combo-badge" id="combo-badge">🔥 0콤보</span>
+      </span>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="quiz-progress">1 / 10</span>
+        <span id="quiz-diff-label">🌱 쉬움</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="timer-wrap">
+      <div class="timer-bar">
+        <div class="timer-fill" id="timer-fill" style="width:100%"></div>
+      </div>
+      <div class="timer-num" id="timer-num">10</div>
+    </div>
+
+    <div class="flag-box">
+      <img class="flag-img" id="flag-img" src="" alt="국기">
+      <div class="flag-hint">이 나라의 이름은?</div>
+    </div>
+
+    <div class="choices" id="choices"></div>
+  </div>
+
+  <!-- 결과 화면 -->
+  <div id="screen-result" class="card hidden">
+    <h1 style="margin-bottom:20px">📊 결과</h1>
+
+    <div class="score-circle" id="score-circle">
+      <div class="score-inner">
+        <div class="score-num" id="result-score">0</div>
+        <div class="score-total" id="result-total">/ 10</div>
+      </div>
+    </div>
+
+    <div class="result-message" id="result-message"></div>
+
+    <div class="result-stats">
+      <div class="stat">
+        <div class="stat-num" id="result-correct">0</div>
+        <div class="stat-label">정답</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="result-wrong-count">0</div>
+        <div class="stat-label">오답</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="result-rate">0%</div>
+        <div class="stat-label">정답률</div>
+      </div>
+    </div>
+
+    <div class="wrong-list" id="wrong-list"></div>
+
+    <button class="btn-primary" onclick="startQuiz()">다시 도전 🔄</button>
+    <button class="btn-secondary" onclick="showHome()">홈으로 🏠</button>
+  </div>
+
+  <!-- 중단 모달 -->
+  <div class="modal-overlay hidden" id="quit-modal">
+    <div class="modal">
+      <h3>퀴즈를 그만할까요?</h3>
+      <p>지금까지의 결과는 저장되지 않아요</p>
+      <div class="modal-btns">
+        <button class="modal-quit" onclick="confirmQuit()">그만하기</button>
+        <button class="modal-continue" onclick="closeModal()">계속하기</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const COUNTRIES = [
+  // 쉬움 (easy)
+  { code: 'kr', name: '대한민국', diff: 'easy' },
+  { code: 'us', name: '미국', diff: 'easy' },
+  { code: 'jp', name: '일본', diff: 'easy' },
+  { code: 'cn', name: '중국', diff: 'easy' },
+  { code: 'gb', name: '영국', diff: 'easy' },
+  { code: 'fr', name: '프랑스', diff: 'easy' },
+  { code: 'de', name: '독일', diff: 'easy' },
+  { code: 'it', name: '이탈리아', diff: 'easy' },
+  { code: 'es', name: '스페인', diff: 'easy' },
+  { code: 'br', name: '브라질', diff: 'easy' },
+  { code: 'ca', name: '캐나다', diff: 'easy' },
+  { code: 'au', name: '호주', diff: 'easy' },
+  { code: 'ru', name: '러시아', diff: 'easy' },
+  { code: 'in', name: '인도', diff: 'easy' },
+  { code: 'mx', name: '멕시코', diff: 'easy' },
+  { code: 'ar', name: '아르헨티나', diff: 'easy' },
+  { code: 'sa', name: '사우디아라비아', diff: 'easy' },
+  { code: 'za', name: '남아프리카공화국', diff: 'easy' },
+  { code: 'tr', name: '터키', diff: 'easy' },
+  { code: 'eg', name: '이집트', diff: 'easy' },
+
+  // 보통 (medium)
+  { code: 'nl', name: '네덜란드', diff: 'medium' },
+  { code: 'be', name: '벨기에', diff: 'medium' },
+  { code: 'se', name: '스웨덴', diff: 'medium' },
+  { code: 'no', name: '노르웨이', diff: 'medium' },
+  { code: 'dk', name: '덴마크', diff: 'medium' },
+  { code: 'fi', name: '핀란드', diff: 'medium' },
+  { code: 'ch', name: '스위스', diff: 'medium' },
+  { code: 'at', name: '오스트리아', diff: 'medium' },
+  { code: 'pt', name: '포르투갈', diff: 'medium' },
+  { code: 'pl', name: '폴란드', diff: 'medium' },
+  { code: 'cz', name: '체코', diff: 'medium' },
+  { code: 'gr', name: '그리스', diff: 'medium' },
+  { code: 'th', name: '태국', diff: 'medium' },
+  { code: 'vn', name: '베트남', diff: 'medium' },
+  { code: 'ph', name: '필리핀', diff: 'medium' },
+  { code: 'id', name: '인도네시아', diff: 'medium' },
+  { code: 'my', name: '말레이시아', diff: 'medium' },
+  { code: 'sg', name: '싱가포르', diff: 'medium' },
+  { code: 'nz', name: '뉴질랜드', diff: 'medium' },
+  { code: 'il', name: '이스라엘', diff: 'medium' },
+  { code: 'ir', name: '이란', diff: 'medium' },
+  { code: 'pk', name: '파키스탄', diff: 'medium' },
+  { code: 'ng', name: '나이지리아', diff: 'medium' },
+  { code: 'ke', name: '케냐', diff: 'medium' },
+  { code: 'ma', name: '모로코', diff: 'medium' },
+  { code: 'ae', name: '아랍에미리트', diff: 'medium' },
+  { code: 'co', name: '콜롬비아', diff: 'medium' },
+  { code: 'cl', name: '칠레', diff: 'medium' },
+  { code: 've', name: '베네수엘라', diff: 'medium' },
+  { code: 'ua', name: '우크라이나', diff: 'medium' },
+
+  // 어려움 (hard)
+  { code: 'kh', name: '캄보디아', diff: 'hard' },
+  { code: 'mm', name: '미얀마', diff: 'hard' },
+  { code: 'lk', name: '스리랑카', diff: 'hard' },
+  { code: 'np', name: '네팔', diff: 'hard' },
+  { code: 'bd', name: '방글라데시', diff: 'hard' },
+  { code: 'mn', name: '몽골', diff: 'hard' },
+  { code: 'kz', name: '카자흐스탄', diff: 'hard' },
+  { code: 'uz', name: '우즈베키스탄', diff: 'hard' },
+  { code: 'ge', name: '조지아', diff: 'hard' },
+  { code: 'am', name: '아르메니아', diff: 'hard' },
+  { code: 'az', name: '아제르바이잔', diff: 'hard' },
+  { code: 'hr', name: '크로아티아', diff: 'hard' },
+  { code: 'rs', name: '세르비아', diff: 'hard' },
+  { code: 'ro', name: '루마니아', diff: 'hard' },
+  { code: 'hu', name: '헝가리', diff: 'hard' },
+  { code: 'sk', name: '슬로바키아', diff: 'hard' },
+  { code: 'bg', name: '불가리아', diff: 'hard' },
+  { code: 'ee', name: '에스토니아', diff: 'hard' },
+  { code: 'lv', name: '라트비아', diff: 'hard' },
+  { code: 'lt', name: '리투아니아', diff: 'hard' },
+  { code: 'si', name: '슬로베니아', diff: 'hard' },
+  { code: 'ba', name: '보스니아헤르체고비나', diff: 'hard' },
+  { code: 'al', name: '알바니아', diff: 'hard' },
+  { code: 'mk', name: '북마케도니아', diff: 'hard' },
+  { code: 'is', name: '아이슬란드', diff: 'hard' },
+  { code: 'ie', name: '아일랜드', diff: 'hard' },
+  { code: 'lu', name: '룩셈부르크', diff: 'hard' },
+  { code: 'mt', name: '몰타', diff: 'hard' },
+  { code: 'cy', name: '키프로스', diff: 'hard' },
+  { code: 'tn', name: '튀니지', diff: 'hard' },
+  { code: 'dz', name: '알제리', diff: 'hard' },
+  { code: 'ly', name: '리비아', diff: 'hard' },
+  { code: 'gh', name: '가나', diff: 'hard' },
+  { code: 'et', name: '에티오피아', diff: 'hard' },
+  { code: 'tz', name: '탄자니아', diff: 'hard' },
+  { code: 'ug', name: '우간다', diff: 'hard' },
+  { code: 'zm', name: '잠비아', diff: 'hard' },
+  { code: 'zw', name: '짐바브웨', diff: 'hard' },
+  { code: 'ao', name: '앙골라', diff: 'hard' },
+  { code: 'cm', name: '카메룬', diff: 'hard' },
+  { code: 'pe', name: '페루', diff: 'hard' },
+  { code: 'ec', name: '에콰도르', diff: 'hard' },
+  { code: 'bo', name: '볼리비아', diff: 'hard' },
+  { code: 'py', name: '파라과이', diff: 'hard' },
+  { code: 'uy', name: '우루과이', diff: 'hard' },
+  { code: 'cr', name: '코스타리카', diff: 'hard' },
+  { code: 'pa', name: '파나마', diff: 'hard' },
+  { code: 'cu', name: '쿠바', diff: 'hard' },
+  { code: 'do', name: '도미니카공화국', diff: 'hard' },
+  { code: 'jm', name: '자메이카', diff: 'hard' },
+];
+
+const TOTAL_PER_GAME = 10;
+const TIMER_SEC = 10;
+
+let pool = [];
+let quizItems = [];
+let currentIdx = 0;
+let correct = 0;
+let wrong = 0;
+let combo = 0;
+let wrongItems = [];
+let timerInterval = null;
+let timeLeft = TIMER_SEC;
+let answered = false;
+let selectedDiff = 'easy';
+
+function flagUrl(code) {
+  return `https://flagcdn.com/w320/${code}.png`;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function selectDiff(btn) {
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedDiff = btn.dataset.diff;
+}
+
+function getPool() {
+  if (selectedDiff === 'easy') return COUNTRIES.filter(c => c.diff === 'easy');
+  if (selectedDiff === 'medium') return COUNTRIES.filter(c => c.diff !== 'hard');
+  return COUNTRIES;
+}
+
+function startQuiz() {
+  pool = shuffle(getPool());
+  quizItems = pool.slice(0, Math.min(TOTAL_PER_GAME, pool.length));
+  currentIdx = 0; correct = 0; wrong = 0; combo = 0; wrongItems = [];
+  showScreen('quiz');
+  const labels = { easy: '🌱 쉬움', medium: '🌏 보통', hard: '🔥 어려움' };
+  document.getElementById('quiz-diff-label').textContent = labels[selectedDiff];
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  clearInterval(timerInterval);
+
+  const item = quizItems[currentIdx];
+  const total = quizItems.length;
+
+  document.getElementById('quiz-progress').textContent = `${currentIdx + 1} / ${total}`;
+  document.getElementById('quiz-score-live').childNodes[0].textContent = `✅ ${correct}  ❌ ${wrong} `;
+  document.getElementById('progress-fill').style.width = `${(currentIdx / total) * 100}%`;
+  document.getElementById('flag-img').src = flagUrl(item.code);
+
+  // 보기 생성 (정답 + 오답 2개)
+  const others = shuffle(pool.filter(c => c.code !== item.code)).slice(0, 2);
+  const choices = shuffle([item, ...others]);
+
+  const choicesEl = document.getElementById('choices');
+  choicesEl.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = c.name;
+    btn.onclick = () => answer(btn, c.code, item);
+    choicesEl.appendChild(btn);
+  });
+
+  // 타이머
+  timeLeft = TIMER_SEC;
+  updateTimer();
+  timerInterval = setInterval(() => {
+    timeLeft -= 0.1;
+    if (timeLeft <= 0) {
+      timeLeft = 0;
+      updateTimer();
+      clearInterval(timerInterval);
+      if (!answered) timeUp(item);
+    } else {
+      updateTimer();
+    }
+  }, 100);
+}
+
+function updateTimer() {
+  const pct = (timeLeft / TIMER_SEC) * 100;
+  const fill = document.getElementById('timer-fill');
+  fill.style.width = pct + '%';
+  document.getElementById('timer-num').textContent = Math.ceil(timeLeft);
+  fill.className = 'timer-fill' + (pct <= 30 ? ' danger' : pct <= 60 ? ' warning' : '');
+}
+
+function timeUp(item) {
+  answered = true;
+  wrong++;
+  combo = 0;
+  wrongItems.push(item);
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.classList.add('disabled');
+    if (b.textContent === item.name) b.classList.add('correct');
+  });
+  document.getElementById('quiz-score-live').childNodes[0].textContent = `✅ ${correct}  ❌ ${wrong} `;
+  updateCombo();
+  setTimeout(nextQuestion, 1200);
+}
+
+function answer(btn, code, item) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+
+  document.querySelectorAll('.choice-btn').forEach(b => b.classList.add('disabled'));
+
+  if (code === item.code) {
+    btn.classList.add('correct');
+    correct++;
+    combo++;
+  } else {
+    btn.classList.add('wrong');
+    wrong++;
+    combo = 0;
+    wrongItems.push(item);
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (b.textContent === item.name) b.classList.add('correct');
+    });
+  }
+
+  document.getElementById('quiz-score-live').childNodes[0].textContent = `✅ ${correct}  ❌ ${wrong} `;
+  updateCombo();
+  setTimeout(nextQuestion, 1000);
+}
+
+function updateCombo() {
+  const badge = document.getElementById('combo-badge');
+  if (combo >= 3) {
+    badge.style.display = 'inline-block';
+    badge.textContent = `🔥 ${combo}콤보`;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function nextQuestion() {
+  currentIdx++;
+  if (currentIdx < quizItems.length) renderQuestion();
+  else showResult();
+}
+
+function showResult() {
+  clearInterval(timerInterval);
+  const total = quizItems.length;
+  const rate = Math.round((correct / total) * 100);
+  const deg = (correct / total) * 360;
+
+  document.getElementById('score-circle').style.setProperty('--deg', deg + 'deg');
+  document.getElementById('result-score').textContent = correct;
+  document.getElementById('result-total').textContent = '/ ' + total;
+  document.getElementById('result-correct').textContent = correct;
+  document.getElementById('result-wrong-count').textContent = wrong;
+  document.getElementById('result-rate').textContent = rate + '%';
+
+  const msgs = [
+    [90, '🏆 완벽해요! 세계 지리 박사!'],
+    [70, '🎉 훌륭해요! 거의 다 맞혔어요!'],
+    [50, '👍 절반 이상! 조금만 더 공부해요!'],
+    [0,  '💪 괜찮아요! 다시 도전해봐요!'],
+  ];
+  document.getElementById('result-message').textContent = msgs.find(([t]) => rate >= t)[1];
+
+  // 오답 목록
+  const wl = document.getElementById('wrong-list');
+  wl.innerHTML = wrongItems.length > 0
+    ? `<div class="wrong-title">❌ 틀린 나라 (${wrongItems.length}개)</div>` +
+      wrongItems.map(c => `
+        <div class="wrong-item">
+          <img class="wrong-flag" src="${flagUrl(c.code)}" alt="${c.name}">
+          <span class="wrong-name">${c.name}</span>
+        </div>`).join('')
+    : '';
+
+  // 최고 점수 저장
+  const saved = JSON.parse(localStorage.getItem('flags_stats') || '{}');
+  if (!saved[selectedDiff] || rate > saved[selectedDiff]) saved[selectedDiff] = rate;
+  localStorage.setItem('flags_stats', JSON.stringify(saved));
+
+  showScreen('result');
+}
+
+function showHome() {
+  clearInterval(timerInterval);
+  const saved = JSON.parse(localStorage.getItem('flags_stats') || '{}');
+  ['easy','medium','hard'].forEach(d => {
+    const el = document.getElementById(`stat-best-${d}`);
+    el.textContent = saved[d] != null ? saved[d] + '점' : '-';
+  });
+  showScreen('home');
+}
+
+function showScreen(name) {
+  ['home','quiz','result'].forEach(s => {
+    document.getElementById('screen-' + s).classList.toggle('hidden', s !== name);
+  });
+}
+
+function openModal() { document.getElementById('quit-modal').classList.remove('hidden'); }
+function closeModal() { document.getElementById('quit-modal').classList.add('hidden'); }
+function confirmQuit() { closeModal(); showHome(); }
+
+// 홈 화면 최고 점수 초기화
+window.onload = () => {
+  const saved = JSON.parse(localStorage.getItem('flags_stats') || '{}');
+  ['easy','medium','hard'].forEach(d => {
+    const el = document.getElementById(`stat-best-${d}`);
+    el.textContent = saved[d] != null ? saved[d] + '점' : '-';
+  });
+};
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+</body>
+</html>
