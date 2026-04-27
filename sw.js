@@ -1,5 +1,5 @@
-// v:2026-04-27T07:38:15
-const CACHE = 'flags-quiz-v:2026-04-27T07:38:15';
+// v:2026-04-27T07:41:30
+const CACHE = 'flags-quiz-v:2026-04-27T07:41:30';
 const ASSETS = [
   '/flags-quiz/',
   '/flags-quiz/index.html',
