@@ -14,8 +14,6 @@
   <style>
     :root {
       --bg:      #0D1B3E;
-      --card:    rgba(255,255,255,.08);
-      --border:  rgba(255,255,255,.12);
       --accent:  #FBBF24;
       --correct: #22C55E;
       --wrong:   #EF4444;
@@ -28,7 +26,6 @@
       background:linear-gradient(160deg,#0D1B3E 0%,#1E3A8A 55%,#0D1B2A 100%); padding:20px; }
     .screen.active { display:flex; }
 
-    /* 버튼 */
     .btn { border:none; border-radius:50px; font-family:'Jua',sans-serif; cursor:pointer; transition:transform .1s,opacity .1s; }
     .btn:active { transform:scale(.94); opacity:.9; }
     .btn-primary { background:var(--accent); color:#1a0a00; font-size:20px; padding:16px 48px;
@@ -36,47 +33,58 @@
     .btn-ghost { background:rgba(255,255,255,.1); color:#fff; font-size:15px; padding:11px 28px; }
 
     /* ── 홈 ── */
-    #s-home { gap:12px; }
-    .home-title { font-size:38px; color:#fff; text-align:center; }
-    .home-sub { color:var(--text2); font-size:15px; text-align:center; margin-bottom:4px; }
-    .home-best { color:var(--accent); font-size:16px; text-align:center; margin-bottom:8px; }
-    .home-btns { display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:280px; }
-    .home-btns .btn { width:100%; text-align:center; }
+    #s-home { gap:10px; }
+    .home-title { font-size:36px; color:#fff; text-align:center; }
+    .home-sub { color:var(--text2); font-size:14px; text-align:center; margin-bottom:2px; }
+    .home-best { color:var(--accent); font-size:15px; text-align:center; }
+
+    .section-label { color:var(--text2); font-size:13px; align-self:flex-start; margin-bottom:-6px; padding-left:2px; }
+
+    /* 모드 선택 */
+    .mode-row { display:flex; gap:10px; width:100%; max-width:320px; }
+    .mode-chip { flex:1; background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.2);
+      border-radius:16px; padding:12px 8px; color:#fff; font-family:'Jua',sans-serif; font-size:14px;
+      cursor:pointer; text-align:center; transition:all .15s; }
+    .mode-chip .icon { font-size:22px; display:block; margin-bottom:4px; }
+    .mode-chip.active { border-color:var(--accent); background:rgba(251,191,36,.15); color:var(--accent); }
 
     /* 난이도 */
-    .diff-row { display:flex; gap:8px; margin-bottom:4px; }
+    .diff-row { display:flex; gap:8px; }
     .diff-chip { background:rgba(255,255,255,.1); border:2px solid rgba(255,255,255,.2); border-radius:24px;
       padding:8px 18px; color:#fff; font-family:'Jua',sans-serif; font-size:14px; cursor:pointer; transition:all .15s; }
     .diff-chip.active { border-color:var(--accent); background:rgba(251,191,36,.15); color:var(--accent); }
 
+    .home-btns { display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:280px; margin-top:4px; }
+    .home-btns .btn { width:100%; text-align:center; }
+
     /* ── 게임 ── */
     #s-game { justify-content:flex-start; padding-top:env(safe-area-inset-top,20px); gap:0; }
-    .game-header { width:100%; max-width:480px; display:flex; align-items:center; justify-content:space-between;
-      padding:12px 0 10px; }
+    .game-header { width:100%; max-width:480px; display:flex; align-items:center; justify-content:space-between; padding:12px 0 10px; }
     .lives { display:flex; gap:6px; }
     .stage-badge { background:rgba(255,255,255,.1); border-radius:20px; padding:6px 16px; color:#fff; font-size:14px; }
     .stage-badge em { color:var(--accent); font-style:normal; font-size:18px; }
 
-    /* 타이머 */
-    .timer-wrap { width:100%; max-width:480px; display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+    .mode-badge { background:rgba(251,191,36,.15); border:1.5px solid rgba(251,191,36,.4);
+      border-radius:20px; padding:5px 14px; color:var(--accent); font-size:13px; margin-bottom:8px; }
+
+    .timer-wrap { width:100%; max-width:480px; display:flex; align-items:center; gap:10px; margin-bottom:12px; }
     .timer-bar { flex:1; height:10px; background:rgba(255,255,255,.12); border-radius:5px; overflow:hidden; }
-    .timer-fill { height:100%; background:linear-gradient(90deg,#22C55E,#86EFAC); border-radius:5px; transition:width .1s linear, background .3s; }
-    .timer-fill.warn { background:linear-gradient(90deg,#F59E0B,#FCD34D); }
+    .timer-fill { height:100%; background:linear-gradient(90deg,#22C55E,#86EFAC); border-radius:5px; transition:width .1s linear,background .3s; }
+    .timer-fill.warn   { background:linear-gradient(90deg,#F59E0B,#FCD34D); }
     .timer-fill.danger { background:linear-gradient(90deg,#EF4444,#FCA5A5); }
     .timer-num { font-size:16px; color:var(--text2); min-width:28px; text-align:right; }
 
-    /* 국기 */
     .flag-wrap { width:100%; max-width:480px; background:rgba(255,255,255,.06); border:1.5px solid rgba(255,255,255,.12);
-      border-radius:20px; padding:18px; display:flex; align-items:center; justify-content:center;
-      margin-bottom:16px; min-height:160px; }
-    .flag-img { max-width:260px; max-height:180px; width:100%; height:auto;
+      border-radius:20px; padding:16px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      margin-bottom:14px; min-height:150px; }
+    .flag-img { max-width:240px; max-height:160px; width:100%; height:auto;
       object-fit:contain; border-radius:8px; box-shadow:0 4px 16px rgba(0,0,0,.35); display:block; }
+    .flag-question { font-size:14px; color:var(--text2); margin-top:10px; }
 
-    /* 보기 */
     .choices { width:100%; max-width:480px; display:flex; flex-direction:column; gap:10px; }
     .choice-btn { background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.15); border-radius:16px;
-      padding:16px; color:#fff; font-family:'Jua',sans-serif; font-size:1.05rem; text-align:center;
-      cursor:pointer; transition:all .15s; }
+      padding:15px; color:#fff; font-family:'Jua',sans-serif; font-size:1rem; text-align:center;
+      cursor:pointer; transition:all .15s; line-height:1.3; }
     .choice-btn:active { transform:scale(.97); }
     .choice-btn.correct { border-color:var(--correct); background:rgba(34,197,94,.18); color:var(--correct); }
     .choice-btn.wrong   { border-color:var(--wrong);   background:rgba(239,68,68,.18);  color:var(--wrong); }
@@ -97,13 +105,13 @@
     .over-btns .btn { width:100%; text-align:center; font-size:16px; padding:14px; }
 
     /* ── 랭킹 ── */
-    #s-rank { justify-content:flex-start; padding-top:30px; gap:12px; }
+    #s-rank { justify-content:flex-start; padding-top:24px; gap:12px; }
     .rank-title { font-size:26px; color:#fff; }
-    .rank-toggle { display:flex; background:rgba(255,255,255,.08); border-radius:30px; padding:4px; gap:4px; }
-    .rank-tab { padding:8px 20px; border-radius:24px; font-family:'Jua',sans-serif; font-size:14px;
+    .rank-toggle { display:flex; background:rgba(255,255,255,.08); border-radius:30px; padding:4px; gap:4px; flex-wrap:wrap; justify-content:center; }
+    .rank-tab { padding:7px 16px; border-radius:24px; font-family:'Jua',sans-serif; font-size:13px;
       color:var(--text2); cursor:pointer; transition:all .15s; border:none; background:transparent; }
     .rank-tab.active { background:var(--accent); color:#1a0a00; }
-    .rank-list { width:100%; max-width:440px; overflow-y:auto; max-height:calc(100vh - 260px); }
+    .rank-list { width:100%; max-width:440px; overflow-y:auto; max-height:calc(100vh - 280px); }
     .rank-item { display:flex; align-items:center; gap:12px; padding:12px 16px;
       background:rgba(255,255,255,.06); border-radius:14px; margin-bottom:8px; }
     .rank-pos { font-size:18px; font-weight:900; color:var(--text2); min-width:32px; }
@@ -111,11 +119,9 @@
     .rank-pos.silver { color:#C0C0C0; }
     .rank-pos.bronze { color:#CD7F32; }
     .rank-name { flex:1; color:#fff; font-size:16px; }
-    .rank-diff { font-size:12px; color:var(--text2); }
+    .rank-meta { font-size:12px; color:var(--text2); }
     .rank-score { font-size:20px; font-weight:900; color:var(--accent); }
     .rank-empty { color:var(--text2); font-size:15px; text-align:center; padding:30px; }
-
-    /* 하트 SVG */
     .heart { width:28px; height:28px; }
   </style>
 </head>
@@ -123,20 +129,31 @@
 
 <!-- ── 홈 ── -->
 <div id="s-home" class="screen active">
-  <div style="font-size:64px;margin-bottom:4px">🌍</div>
+  <div style="font-size:58px;margin-bottom:2px">🌍</div>
   <div class="home-title">국기 퀴즈</div>
-  <div class="home-sub">세계 국기를 보고 나라 이름을 맞혀보세요!</div>
+  <div class="home-sub" id="home-sub">국기를 보고 맞혀보세요!</div>
   <div class="home-best" id="home-best">아직 기록이 없어요</div>
 
+  <div class="section-label">게임 모드</div>
+  <div class="mode-row">
+    <button class="mode-chip active" data-mode="country" onclick="selectMode(this)">
+      <span class="icon">🏳️</span>나라 이름
+    </button>
+    <button class="mode-chip" data-mode="capital" onclick="selectMode(this)">
+      <span class="icon">🏛️</span>수도 이름
+    </button>
+  </div>
+
+  <div class="section-label">난이도</div>
   <div class="diff-row">
-    <button class="diff-chip active" data-diff="easy" onclick="selectDiff(this)">🌱 쉬움</button>
-    <button class="diff-chip" data-diff="medium" onclick="selectDiff(this)">🌏 보통</button>
-    <button class="diff-chip" data-diff="hard" onclick="selectDiff(this)">🔥 어려움</button>
+    <button class="diff-chip active" data-diff="easy"   onclick="selectDiff(this)">🌱 쉬움</button>
+    <button class="diff-chip"        data-diff="medium" onclick="selectDiff(this)">🌏 보통</button>
+    <button class="diff-chip"        data-diff="hard"   onclick="selectDiff(this)">🔥 어려움</button>
   </div>
 
   <div class="home-btns">
     <button class="btn btn-primary" onclick="startGame()">시작하기 🚀</button>
-    <button class="btn btn-ghost" onclick="showRank()">🏆 랭킹 보기</button>
+    <button class="btn btn-ghost"   onclick="showRank()">🏆 랭킹 보기</button>
   </div>
 </div>
 
@@ -146,6 +163,7 @@
     <div class="lives" id="lives-ui"></div>
     <div class="stage-badge">STAGE <em id="stage-num">1</em></div>
   </div>
+  <div class="mode-badge" id="mode-badge">🏳️ 나라 이름 맞추기</div>
 
   <div class="timer-wrap">
     <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
@@ -154,6 +172,7 @@
 
   <div class="flag-wrap">
     <img class="flag-img" id="flag-img" src="" alt="국기">
+    <div class="flag-question" id="flag-question">이 나라의 이름은?</div>
   </div>
 
   <div class="choices" id="choices"></div>
@@ -168,8 +187,8 @@
   <input class="name-input" id="name-input" type="text" maxlength="10" placeholder="이름을 입력하세요">
   <div class="over-btns">
     <button class="btn btn-primary" onclick="submitScore()">기록 저장 🏆</button>
-    <button class="btn btn-ghost" onclick="startGame()">다시 도전 🔄</button>
-    <button class="btn btn-ghost" onclick="showHome()">홈으로 🏠</button>
+    <button class="btn btn-ghost"   onclick="startGame()">다시 도전 🔄</button>
+    <button class="btn btn-ghost"   onclick="showHome()">홈으로 🏠</button>
   </div>
 </div>
 
@@ -188,104 +207,108 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 <script src="firebase-config.js"></script>
 <script>
-// ── 데이터 ──────────────────────────────────────────────────────────
 const COUNTRIES = [
-  { code:'kr', name:'대한민국', diff:'easy' },
-  { code:'us', name:'미국',     diff:'easy' },
-  { code:'jp', name:'일본',     diff:'easy' },
-  { code:'cn', name:'중국',     diff:'easy' },
-  { code:'gb', name:'영국',     diff:'easy' },
-  { code:'fr', name:'프랑스',   diff:'easy' },
-  { code:'de', name:'독일',     diff:'easy' },
-  { code:'it', name:'이탈리아', diff:'easy' },
-  { code:'es', name:'스페인',   diff:'easy' },
-  { code:'br', name:'브라질',   diff:'easy' },
-  { code:'ca', name:'캐나다',   diff:'easy' },
-  { code:'au', name:'호주',     diff:'easy' },
-  { code:'ru', name:'러시아',   diff:'easy' },
-  { code:'in', name:'인도',     diff:'easy' },
-  { code:'mx', name:'멕시코',   diff:'easy' },
-  { code:'ar', name:'아르헨티나', diff:'easy' },
-  { code:'sa', name:'사우디아라비아', diff:'easy' },
-  { code:'za', name:'남아공',   diff:'easy' },
-  { code:'tr', name:'터키',     diff:'easy' },
-  { code:'eg', name:'이집트',   diff:'easy' },
-  { code:'nl', name:'네덜란드', diff:'medium' },
-  { code:'be', name:'벨기에',   diff:'medium' },
-  { code:'se', name:'스웨덴',   diff:'medium' },
-  { code:'no', name:'노르웨이', diff:'medium' },
-  { code:'dk', name:'덴마크',   diff:'medium' },
-  { code:'fi', name:'핀란드',   diff:'medium' },
-  { code:'ch', name:'스위스',   diff:'medium' },
-  { code:'at', name:'오스트리아', diff:'medium' },
-  { code:'pt', name:'포르투갈', diff:'medium' },
-  { code:'pl', name:'폴란드',   diff:'medium' },
-  { code:'cz', name:'체코',     diff:'medium' },
-  { code:'gr', name:'그리스',   diff:'medium' },
-  { code:'th', name:'태국',     diff:'medium' },
-  { code:'vn', name:'베트남',   diff:'medium' },
-  { code:'ph', name:'필리핀',   diff:'medium' },
-  { code:'id', name:'인도네시아', diff:'medium' },
-  { code:'my', name:'말레이시아', diff:'medium' },
-  { code:'sg', name:'싱가포르', diff:'medium' },
-  { code:'nz', name:'뉴질랜드', diff:'medium' },
-  { code:'il', name:'이스라엘', diff:'medium' },
-  { code:'ir', name:'이란',     diff:'medium' },
-  { code:'pk', name:'파키스탄', diff:'medium' },
-  { code:'ng', name:'나이지리아', diff:'medium' },
-  { code:'ke', name:'케냐',     diff:'medium' },
-  { code:'ma', name:'모로코',   diff:'medium' },
-  { code:'ae', name:'아랍에미리트', diff:'medium' },
-  { code:'co', name:'콜롬비아', diff:'medium' },
-  { code:'cl', name:'칠레',     diff:'medium' },
-  { code:'ve', name:'베네수엘라', diff:'medium' },
-  { code:'ua', name:'우크라이나', diff:'medium' },
-  { code:'kh', name:'캄보디아', diff:'hard' },
-  { code:'mm', name:'미얀마',   diff:'hard' },
-  { code:'lk', name:'스리랑카', diff:'hard' },
-  { code:'np', name:'네팔',     diff:'hard' },
-  { code:'bd', name:'방글라데시', diff:'hard' },
-  { code:'mn', name:'몽골',     diff:'hard' },
-  { code:'kz', name:'카자흐스탄', diff:'hard' },
-  { code:'uz', name:'우즈베키스탄', diff:'hard' },
-  { code:'ge', name:'조지아',   diff:'hard' },
-  { code:'am', name:'아르메니아', diff:'hard' },
-  { code:'az', name:'아제르바이잔', diff:'hard' },
-  { code:'hr', name:'크로아티아', diff:'hard' },
-  { code:'rs', name:'세르비아', diff:'hard' },
-  { code:'ro', name:'루마니아', diff:'hard' },
-  { code:'hu', name:'헝가리',   diff:'hard' },
-  { code:'sk', name:'슬로바키아', diff:'hard' },
-  { code:'bg', name:'불가리아', diff:'hard' },
-  { code:'ee', name:'에스토니아', diff:'hard' },
-  { code:'lv', name:'라트비아', diff:'hard' },
-  { code:'lt', name:'리투아니아', diff:'hard' },
-  { code:'si', name:'슬로베니아', diff:'hard' },
-  { code:'al', name:'알바니아', diff:'hard' },
-  { code:'is', name:'아이슬란드', diff:'hard' },
-  { code:'ie', name:'아일랜드', diff:'hard' },
-  { code:'tn', name:'튀니지',   diff:'hard' },
-  { code:'dz', name:'알제리',   diff:'hard' },
-  { code:'gh', name:'가나',     diff:'hard' },
-  { code:'et', name:'에티오피아', diff:'hard' },
-  { code:'tz', name:'탄자니아', diff:'hard' },
-  { code:'pe', name:'페루',     diff:'hard' },
-  { code:'ec', name:'에콰도르', diff:'hard' },
-  { code:'bo', name:'볼리비아', diff:'hard' },
-  { code:'py', name:'파라과이', diff:'hard' },
-  { code:'uy', name:'우루과이', diff:'hard' },
-  { code:'cu', name:'쿠바',     diff:'hard' },
-  { code:'cr', name:'코스타리카', diff:'hard' },
-  { code:'jm', name:'자메이카', diff:'hard' },
+  // ── 쉬움 ──────────────────────────────────────────────────────────
+  { code:'kr', name:'대한민국',       capital:'서울',           diff:'easy' },
+  { code:'us', name:'미국',           capital:'워싱턴 D.C.',    diff:'easy' },
+  { code:'jp', name:'일본',           capital:'도쿄',           diff:'easy' },
+  { code:'cn', name:'중국',           capital:'베이징',         diff:'easy' },
+  { code:'gb', name:'영국',           capital:'런던',           diff:'easy' },
+  { code:'fr', name:'프랑스',         capital:'파리',           diff:'easy' },
+  { code:'de', name:'독일',           capital:'베를린',         diff:'easy' },
+  { code:'it', name:'이탈리아',       capital:'로마',           diff:'easy' },
+  { code:'es', name:'스페인',         capital:'마드리드',       diff:'easy' },
+  { code:'br', name:'브라질',         capital:'브라질리아',     diff:'easy' },
+  { code:'ca', name:'캐나다',         capital:'오타와',         diff:'easy' },
+  { code:'au', name:'호주',           capital:'캔버라',         diff:'easy' },
+  { code:'ru', name:'러시아',         capital:'모스크바',       diff:'easy' },
+  { code:'in', name:'인도',           capital:'뉴델리',         diff:'easy' },
+  { code:'mx', name:'멕시코',         capital:'멕시코시티',     diff:'easy' },
+  { code:'ar', name:'아르헨티나',     capital:'부에노스아이레스', diff:'easy' },
+  { code:'sa', name:'사우디아라비아', capital:'리야드',         diff:'easy' },
+  { code:'za', name:'남아공',         capital:'프리토리아',     diff:'easy' },
+  { code:'tr', name:'터키',           capital:'앙카라',         diff:'easy' },
+  { code:'eg', name:'이집트',         capital:'카이로',         diff:'easy' },
+
+  // ── 보통 ──────────────────────────────────────────────────────────
+  { code:'nl', name:'네덜란드',       capital:'암스테르담',     diff:'medium' },
+  { code:'be', name:'벨기에',         capital:'브뤼셀',         diff:'medium' },
+  { code:'se', name:'스웨덴',         capital:'스톡홀름',       diff:'medium' },
+  { code:'no', name:'노르웨이',       capital:'오슬로',         diff:'medium' },
+  { code:'dk', name:'덴마크',         capital:'코펜하겐',       diff:'medium' },
+  { code:'fi', name:'핀란드',         capital:'헬싱키',         diff:'medium' },
+  { code:'ch', name:'스위스',         capital:'베른',           diff:'medium' },
+  { code:'at', name:'오스트리아',     capital:'빈',             diff:'medium' },
+  { code:'pt', name:'포르투갈',       capital:'리스본',         diff:'medium' },
+  { code:'pl', name:'폴란드',         capital:'바르샤바',       diff:'medium' },
+  { code:'cz', name:'체코',           capital:'프라하',         diff:'medium' },
+  { code:'gr', name:'그리스',         capital:'아테네',         diff:'medium' },
+  { code:'th', name:'태국',           capital:'방콕',           diff:'medium' },
+  { code:'vn', name:'베트남',         capital:'하노이',         diff:'medium' },
+  { code:'ph', name:'필리핀',         capital:'마닐라',         diff:'medium' },
+  { code:'id', name:'인도네시아',     capital:'자카르타',       diff:'medium' },
+  { code:'my', name:'말레이시아',     capital:'쿠알라룸푸르',   diff:'medium' },
+  { code:'sg', name:'싱가포르',       capital:'싱가포르',       diff:'medium' },
+  { code:'nz', name:'뉴질랜드',       capital:'웰링턴',         diff:'medium' },
+  { code:'il', name:'이스라엘',       capital:'예루살렘',       diff:'medium' },
+  { code:'ir', name:'이란',           capital:'테헤란',         diff:'medium' },
+  { code:'pk', name:'파키스탄',       capital:'이슬라마바드',   diff:'medium' },
+  { code:'ng', name:'나이지리아',     capital:'아부자',         diff:'medium' },
+  { code:'ke', name:'케냐',           capital:'나이로비',       diff:'medium' },
+  { code:'ma', name:'모로코',         capital:'라바트',         diff:'medium' },
+  { code:'ae', name:'아랍에미리트',   capital:'아부다비',       diff:'medium' },
+  { code:'co', name:'콜롬비아',       capital:'보고타',         diff:'medium' },
+  { code:'cl', name:'칠레',           capital:'산티아고',       diff:'medium' },
+  { code:'ve', name:'베네수엘라',     capital:'카라카스',       diff:'medium' },
+  { code:'ua', name:'우크라이나',     capital:'키이우',         diff:'medium' },
+
+  // ── 어려움 ────────────────────────────────────────────────────────
+  { code:'kh', name:'캄보디아',       capital:'프놈펜',         diff:'hard' },
+  { code:'mm', name:'미얀마',         capital:'네피도',         diff:'hard' },
+  { code:'lk', name:'스리랑카',       capital:'콜롬보',         diff:'hard' },
+  { code:'np', name:'네팔',           capital:'카트만두',       diff:'hard' },
+  { code:'bd', name:'방글라데시',     capital:'다카',           diff:'hard' },
+  { code:'mn', name:'몽골',           capital:'울란바토르',     diff:'hard' },
+  { code:'kz', name:'카자흐스탄',     capital:'아스타나',       diff:'hard' },
+  { code:'uz', name:'우즈베키스탄',   capital:'타슈켄트',       diff:'hard' },
+  { code:'ge', name:'조지아',         capital:'트빌리시',       diff:'hard' },
+  { code:'am', name:'아르메니아',     capital:'예레반',         diff:'hard' },
+  { code:'az', name:'아제르바이잔',   capital:'바쿠',           diff:'hard' },
+  { code:'hr', name:'크로아티아',     capital:'자그레브',       diff:'hard' },
+  { code:'rs', name:'세르비아',       capital:'베오그라드',     diff:'hard' },
+  { code:'ro', name:'루마니아',       capital:'부쿠레슈티',     diff:'hard' },
+  { code:'hu', name:'헝가리',         capital:'부다페스트',     diff:'hard' },
+  { code:'sk', name:'슬로바키아',     capital:'브라티슬라바',   diff:'hard' },
+  { code:'bg', name:'불가리아',       capital:'소피아',         diff:'hard' },
+  { code:'ee', name:'에스토니아',     capital:'탈린',           diff:'hard' },
+  { code:'lv', name:'라트비아',       capital:'리가',           diff:'hard' },
+  { code:'lt', name:'리투아니아',     capital:'빌뉴스',         diff:'hard' },
+  { code:'si', name:'슬로베니아',     capital:'류블랴나',       diff:'hard' },
+  { code:'al', name:'알바니아',       capital:'티라나',         diff:'hard' },
+  { code:'is', name:'아이슬란드',     capital:'레이캬비크',     diff:'hard' },
+  { code:'ie', name:'아일랜드',       capital:'더블린',         diff:'hard' },
+  { code:'tn', name:'튀니지',         capital:'튀니스',         diff:'hard' },
+  { code:'dz', name:'알제리',         capital:'알제',           diff:'hard' },
+  { code:'gh', name:'가나',           capital:'아크라',         diff:'hard' },
+  { code:'et', name:'에티오피아',     capital:'아디스아바바',   diff:'hard' },
+  { code:'tz', name:'탄자니아',       capital:'도도마',         diff:'hard' },
+  { code:'pe', name:'페루',           capital:'리마',           diff:'hard' },
+  { code:'ec', name:'에콰도르',       capital:'키토',           diff:'hard' },
+  { code:'bo', name:'볼리비아',       capital:'라파스',         diff:'hard' },
+  { code:'py', name:'파라과이',       capital:'아순시온',       diff:'hard' },
+  { code:'uy', name:'우루과이',       capital:'몬테비데오',     diff:'hard' },
+  { code:'cu', name:'쿠바',           capital:'아바나',         diff:'hard' },
+  { code:'cr', name:'코스타리카',     capital:'산호세',         diff:'hard' },
+  { code:'jm', name:'자메이카',       capital:'킹스턴',         diff:'hard' },
 ];
 
 const DIFF_LABEL = { easy:'🌱 쉬움', medium:'🌏 보통', hard:'🔥 어려움' };
+const MODE_LABEL = { country:'🏳️ 나라 이름', capital:'🏛️ 수도 이름' };
 const TIMER_SEC  = 10;
 
-// ── 상태 ──────────────────────────────────────────────────────────────
 let pool = [], queue = [], stage = 1, lives = 3, busy = false;
 let timerInt = null, timeLeft = TIMER_SEC;
-let selectedDiff = 'easy', _db = null;
+let selectedDiff = 'easy', selectedMode = 'country', _db = null;
 
 function flagUrl(code) { return `https://flagcdn.com/w320/${code}.png`; }
 
@@ -298,23 +321,21 @@ function shuffle(arr) {
   return a;
 }
 
-// ── 하트 SVG ──────────────────────────────────────────────────────────
 function heartSVG(alive) {
   const c = alive ? '#EF4444' : 'rgba(255,255,255,.15)';
   return `<svg class="heart" viewBox="0 0 24 24"><path fill="${c}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
 }
 
-// ── 로컬 점수 ──────────────────────────────────────────────────────────
+// ── 로컬 저장 ──────────────────────────────────────────────────────────
 function loadLocal() { try { return JSON.parse(localStorage.getItem('flags_scores')||'[]'); } catch{ return []; } }
-function saveLocal(name, s, diff) {
+function saveLocal(name, s, diff, mode) {
   const arr = loadLocal();
-  arr.push({ name: name||'익명', stage: s, diff, ts: Date.now() });
+  arr.push({ name: name||'익명', stage: s, diff, mode, ts: Date.now() });
   arr.sort((a,b) => b.stage - a.stage);
   localStorage.setItem('flags_scores', JSON.stringify(arr.slice(0,50)));
 }
-function bestLocal(diff) {
-  const arr = loadLocal().filter(s => s.diff === diff);
-  return arr.length ? arr[0].stage : 0;
+function bestLocal(diff, mode) {
+  return loadLocal().filter(s => s.diff===diff && s.mode===mode).reduce((m,s) => Math.max(m,s.stage), 0);
 }
 
 // ── Firebase ──────────────────────────────────────────────────────────
@@ -334,23 +355,33 @@ function show(id) {
   document.getElementById(id).classList.add('active');
 }
 
+function updateHomeBest() {
+  const b = bestLocal(selectedDiff, selectedMode);
+  document.getElementById('home-best').innerHTML = b
+    ? `${DIFF_LABEL[selectedDiff]} ${MODE_LABEL[selectedMode]} 최고: <b>Stage ${b}</b>`
+    : '아직 기록이 없어요';
+  document.getElementById('home-sub').textContent =
+    selectedMode === 'capital' ? '국기를 보고 수도를 맞혀보세요!' : '국기를 보고 나라 이름을 맞혀보세요!';
+}
+
 function showHome() {
   clearInterval(timerInt);
-  const b = bestLocal(selectedDiff);
-  document.getElementById('home-best').innerHTML = b
-    ? `${DIFF_LABEL[selectedDiff]} 최고: <b>Stage ${b}</b>`
-    : '아직 기록이 없어요';
+  updateHomeBest();
   show('s-home');
+}
+
+function selectMode(btn) {
+  document.querySelectorAll('.mode-chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedMode = btn.dataset.mode;
+  updateHomeBest();
 }
 
 function selectDiff(btn) {
   document.querySelectorAll('.diff-chip').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   selectedDiff = btn.dataset.diff;
-  const b = bestLocal(selectedDiff);
-  document.getElementById('home-best').innerHTML = b
-    ? `${DIFF_LABEL[selectedDiff]} 최고: <b>Stage ${b}</b>`
-    : '아직 기록이 없어요';
+  updateHomeBest();
 }
 
 // ── 게임 시작 ──────────────────────────────────────────────────────────
@@ -364,6 +395,9 @@ function startGame() {
   pool  = shuffle(getPool());
   queue = [...pool];
   stage = 1; lives = 3; busy = false;
+  document.getElementById('mode-badge').textContent = MODE_LABEL[selectedMode] + ' 맞추기';
+  document.getElementById('flag-question').textContent =
+    selectedMode === 'capital' ? '이 나라의 수도는?' : '이 나라의 이름은?';
   renderHUD();
   show('s-game');
   nextFlag();
@@ -388,12 +422,11 @@ function nextFlag() {
   choices.forEach(c => {
     const btn = document.createElement('button');
     btn.className = 'choice-btn';
-    btn.textContent = c.name;
+    btn.textContent = selectedMode === 'capital' ? c.capital : c.name;
     btn.onclick = () => pick(btn, c.code, item);
     el.appendChild(btn);
   });
 
-  // 타이머
   clearInterval(timerInt);
   timeLeft = TIMER_SEC;
   updateTimer();
@@ -430,10 +463,10 @@ function onCorrect(btn) {
 function onWrong(item, wrongBtn) {
   busy = true;
   if (wrongBtn) wrongBtn.classList.add('wrong');
-  // 정답 표시
+  const answer = selectedMode === 'capital' ? item.capital : item.name;
   document.querySelectorAll('.choice-btn').forEach(b => {
     b.classList.add('disabled');
-    if (b.textContent === item.name) b.classList.add('correct');
+    if (b.textContent === answer) b.classList.add('correct');
   });
   lives--;
   renderHUD();
@@ -456,13 +489,11 @@ async function submitScore() {
   if (reached === 0) { startGame(); return; }
   const name = document.getElementById('name-input').value.trim() || '익명';
   localStorage.setItem('flags_last_name', name);
-  saveLocal(name, reached, selectedDiff);
-
+  saveLocal(name, reached, selectedDiff, selectedMode);
   initDB();
   if (_db) {
     try {
-      await _db.ref('flags_scores').push({ name, stage: reached, diff: selectedDiff, ts: Date.now() });
-      console.log('[Firebase] 저장 완료');
+      await _db.ref('flags_scores').push({ name, stage: reached, diff: selectedDiff, mode: selectedMode, ts: Date.now() });
     } catch(e) { console.warn('[Firebase]', e); }
   }
   showRank();
@@ -488,44 +519,32 @@ function switchRank(btn, mode) {
 async function loadRank() {
   const el = document.getElementById('rank-list');
   el.innerHTML = '<div class="rank-empty">불러오는 중...</div>';
-
   let scores = [];
   initDB();
-
   if (rankMode === 'global' && _db) {
     try {
       const snap = await _db.ref('flags_scores').get();
       const data = snap.val();
       if (data) scores = Object.values(data).filter(s => s && s.stage != null);
       scores.sort((a,b) => b.stage - a.stage);
-    } catch(e) {
-      scores = loadLocal();
-    }
+    } catch(e) { scores = loadLocal(); }
   } else {
     scores = loadLocal();
   }
-
   if (!scores.length) { el.innerHTML = '<div class="rank-empty">아직 기록이 없어요 🌍</div>'; return; }
-
-  const posClass = ['gold','silver','bronze'];
+  const pos = ['gold','silver','bronze'];
   el.innerHTML = scores.slice(0,10).map((s,i) => `
     <div class="rank-item">
-      <div class="rank-pos ${posClass[i]||''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
+      <div class="rank-pos ${pos[i]||''}">${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1}</div>
       <div class="rank-name">
         ${s.name}
-        <div class="rank-diff">${DIFF_LABEL[s.diff]||''}</div>
+        <div class="rank-meta">${DIFF_LABEL[s.diff]||''} · ${MODE_LABEL[s.mode]||''}</div>
       </div>
       <div class="rank-score">Stage ${s.stage}</div>
     </div>`).join('');
 }
 
-// ── 초기화 ──────────────────────────────────────────────────────────────
-window.onload = () => {
-  const b = bestLocal(selectedDiff);
-  document.getElementById('home-best').innerHTML = b
-    ? `${DIFF_LABEL[selectedDiff]} 최고: <b>Stage ${b}</b>`
-    : '아직 기록이 없어요';
-};
+window.onload = updateHomeBest;
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').then(reg => {
