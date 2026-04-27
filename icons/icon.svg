@@ -4,41 +4,37 @@
       <stop offset="0%" stop-color="#1E40AF"/>
       <stop offset="100%" stop-color="#3B82F6"/>
     </linearGradient>
-    <clipPath id="globe-clip">
-      <circle cx="220" cy="270" r="148"/>
-    </clipPath>
   </defs>
 
   <!-- 배경 -->
   <rect width="512" height="512" rx="110" fill="url(#bg)"/>
 
   <!-- 지구 바다 -->
-  <circle cx="220" cy="270" r="148" fill="#1D4ED8" opacity="0.6"/>
+  <circle cx="220" cy="270" r="148" fill="#1D4ED8"/>
 
-  <!-- 지구 격자선 (clip 적용) -->
-  <g clip-path="url(#globe-clip)" fill="none" stroke="white" stroke-width="2.5" opacity="0.35">
-    <!-- 위도선 5개 -->
-    <line x1="72" y1="270" x2="368" y2="270"/>
-    <ellipse cx="220" cy="270" rx="148" ry="50"/>
-    <ellipse cx="220" cy="270" rx="148" ry="100"/>
-    <ellipse cx="220" cy="200" rx="120" ry="38"/>
-    <ellipse cx="220" cy="340" rx="120" ry="38"/>
-    <!-- 경도선 -->
-    <ellipse cx="220" cy="270" rx="50" ry="148"/>
-    <ellipse cx="220" cy="270" rx="100" ry="148"/>
-    <line x1="220" y1="122" x2="220" y2="418"/>
-  </g>
+  <!-- 위도선 -->
+  <ellipse cx="220" cy="270" rx="148" ry="55" fill="none" stroke="white" stroke-width="4"/>
+  <ellipse cx="220" cy="215" rx="125" ry="42" fill="none" stroke="white" stroke-width="3.5"/>
+  <ellipse cx="220" cy="325" rx="125" ry="42" fill="none" stroke="white" stroke-width="3.5"/>
+  <ellipse cx="220" cy="175" rx="80" ry="24" fill="none" stroke="white" stroke-width="3"/>
+  <ellipse cx="220" cy="365" rx="80" ry="24" fill="none" stroke="white" stroke-width="3"/>
+
+  <!-- 경도선 -->
+  <ellipse cx="220" cy="270" rx="52" ry="148" fill="none" stroke="white" stroke-width="3.5"/>
+  <ellipse cx="220" cy="270" rx="105" ry="148" fill="none" stroke="white" stroke-width="3.5"/>
+  <line x1="220" y1="122" x2="220" y2="418" stroke="white" stroke-width="4"/>
 
   <!-- 지구 테두리 -->
-  <circle cx="220" cy="270" r="148" fill="none" stroke="white" stroke-width="5" opacity="0.7"/>
+  <circle cx="220" cy="270" r="148" fill="none" stroke="white" stroke-width="6"/>
 
+  <!-- 물음표 배지 그림자 -->
+  <circle cx="380" cy="150" r="92" fill="#0F172A" opacity="0.25"/>
   <!-- 물음표 배지 -->
-  <circle cx="376" cy="150" r="95" fill="#0F172A" opacity="0.3"/>
   <circle cx="376" cy="146" r="88" fill="#FBBF24"/>
-  <circle cx="376" cy="146" r="80" fill="#F59E0B"/>
-  <text x="376" y="192"
+  <circle cx="376" cy="146" r="78" fill="#F59E0B"/>
+  <!-- 물음표 텍스트 -->
+  <text x="376" y="194"
     font-family="Arial Black, Impact, sans-serif"
-    font-size="120" font-weight="900"
-    text-anchor="middle" fill="white"
-    style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))">?</text>
+    font-size="122" font-weight="900"
+    text-anchor="middle" fill="white">?</text>
 </svg>
