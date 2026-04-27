@@ -1,10 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <!-- 흰색 배경 -->
   <rect width="512" height="512" rx="110" fill="white"/>
-  <!-- 🌍 지구 이모지 -->
-  <text x="245" y="340" font-size="340" text-anchor="middle" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">🌍</text>
-  <!-- 물음표 배지 -->
-  <circle cx="390" cy="130" r="88" fill="white"/>
-  <circle cx="390" cy="130" r="76" fill="#FBBF24"/>
-  <text x="390" y="172" font-family="Arial Black, sans-serif" font-size="112" font-weight="900" text-anchor="middle" fill="white">?</text>
+
+  <!-- 바다 -->
+  <circle cx="248" cy="282" r="158" fill="#3B82F6"/>
+
+  <!-- 위도선 -->
+  <ellipse cx="248" cy="282" rx="158" ry="52" fill="none" stroke="white" stroke-width="2.5" opacity="0.25"/>
+  <ellipse cx="248" cy="218" rx="138" ry="42" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
+  <ellipse cx="248" cy="346" rx="138" ry="42" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
+
+  <!-- 경도선 -->
+  <ellipse cx="248" cy="282" rx="58" ry="158" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
+  <line x1="248" y1="124" x2="248" y2="440" stroke="white" stroke-width="2" opacity="0.2"/>
+
+  <!-- 대륙 초록색 -->
+  <!-- 유럽 -->
+  <path d="M220 195 Q245 182 262 192 Q270 205 258 218 Q242 228 225 218 Q215 208 220 195Z" fill="#16A34A"/>
+  <!-- 아프리카 -->
+  <path d="M228 228 Q265 220 278 240 Q292 262 288 298 Q284 332 268 348 Q252 358 238 342 Q220 320 218 290 Q214 258 228 228Z" fill="#16A34A"/>
+  <!-- 아시아 -->
+  <path d="M265 170 Q310 158 340 172 Q368 188 370 218 Q372 248 350 262 Q325 274 298 264 Q272 252 265 228 Q258 205 265 170Z" fill="#16A34A"/>
+  <!-- 아메리카 -->
+  <path d="M128 210 Q158 198 168 220 Q178 244 172 272 Q166 300 150 318 Q133 330 120 308 Q108 280 112 252 Q115 228 128 210Z" fill="#16A34A"/>
+  <!-- 호주 -->
+  <path d="M318 332 Q342 324 352 338 Q360 354 348 366 Q334 374 320 364 Q308 352 318 332Z" fill="#16A34A"/>
+  <!-- 그린란드 -->
+  <ellipse cx="182" cy="152" rx="20" ry="14" fill="#16A34A"/>
+
+  <!-- 지구 테두리 -->
+  <circle cx="248" cy="282" r="158" fill="none" stroke="#1D4ED8" stroke-width="5"/>
+
+  <!-- 물음표 배지 흰 테두리 -->
+  <circle cx="384" cy="138" r="92" fill="white"/>
+  <!-- 물음표 배지 노란색 -->
+  <circle cx="384" cy="138" r="80" fill="#FBBF24"/>
+  <!-- 물음표 -->
+  <text x="384" y="182" font-family="Arial Black, Impact, sans-serif" font-size="118" font-weight="900" text-anchor="middle" fill="white">?</text>
 </svg>
