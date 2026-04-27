@@ -1,41 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <!-- 흰색 배경 -->
   <rect width="512" height="512" rx="110" fill="white"/>
-
-  <!-- 지구 그림자 -->
-  <circle cx="245" cy="278" r="162" fill="#93C5FD" opacity="0.3"/>
-
-  <!-- 바다 (파란색) -->
-  <circle cx="245" cy="268" r="155" fill="#3B82F6"/>
-
-  <!-- 위도선 -->
-  <ellipse cx="245" cy="268" rx="155" ry="50" fill="none" stroke="white" stroke-width="2" opacity="0.2"/>
-  <ellipse cx="245" cy="208" rx="130" ry="38" fill="none" stroke="white" stroke-width="2" opacity="0.15"/>
-  <ellipse cx="245" cy="328" rx="130" ry="38" fill="none" stroke="white" stroke-width="2" opacity="0.15"/>
-
-  <!-- 경도선 -->
-  <ellipse cx="245" cy="268" rx="60" ry="155" fill="none" stroke="white" stroke-width="2" opacity="0.15"/>
-  <line x1="245" y1="113" x2="245" y2="423" stroke="white" stroke-width="2" opacity="0.15"/>
-
-  <!-- 대륙 (초록색) -->
-  <!-- 유럽 -->
-  <ellipse cx="242" cy="215" rx="32" ry="26" fill="#16A34A"/>
-  <!-- 아프리카 -->
-  <ellipse cx="258" cy="300" rx="36" ry="52" fill="#16A34A"/>
-  <!-- 아시아 -->
-  <path d="M275 190 Q340 185 355 230 Q360 265 330 280 Q300 290 280 265 Q265 245 275 220Z" fill="#16A34A"/>
-  <!-- 아메리카 -->
-  <path d="M145 220 Q175 210 180 240 Q185 270 170 300 Q155 330 140 310 Q125 280 130 255 Q130 235 145 220Z" fill="#16A34A"/>
-  <!-- 호주 -->
-  <ellipse cx="325" cy="340" rx="24" ry="17" fill="#16A34A"/>
-  <!-- 그린란드 -->
-  <ellipse cx="190" cy="150" rx="18" ry="13" fill="#16A34A"/>
-
-  <!-- 지구 테두리 -->
-  <circle cx="245" cy="268" r="155" fill="none" stroke="#1D4ED8" stroke-width="5"/>
-
+  <!-- 🌍 지구 이모지 -->
+  <text x="245" y="340" font-size="340" text-anchor="middle" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">🌍</text>
   <!-- 물음표 배지 -->
-  <circle cx="370" cy="152" r="82" fill="white"/>
-  <circle cx="370" cy="152" r="72" fill="#FBBF24"/>
-  <text x="370" y="192" font-family="Arial Black, sans-serif" font-size="108" font-weight="900" text-anchor="middle" fill="white">?</text>
+  <circle cx="390" cy="130" r="88" fill="white"/>
+  <circle cx="390" cy="130" r="76" fill="#FBBF24"/>
+  <text x="390" y="172" font-family="Arial Black, sans-serif" font-size="112" font-weight="900" text-anchor="middle" fill="white">?</text>
 </svg>
